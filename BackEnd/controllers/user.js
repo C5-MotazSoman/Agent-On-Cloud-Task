@@ -1,10 +1,10 @@
 // requer usermodel
-const usermodel = require("../models/UserSchema");
+const userModel = require("../models/UserSchema");
 
 // this function to creates a new  user
 const register = (req, res) => {
   const { firstName, lastName, age, country, email, password } = req.body;
-  const user = new usermodel({
+  const user = new userModel({
     firstName,
     lastName,
     age,
