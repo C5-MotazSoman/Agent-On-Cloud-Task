@@ -84,21 +84,17 @@ const updatProductById = (req, res) => {
             });
           })
           .catch((error1) => {
-            res
-              .status(500)
-              .json({
-                success: false,
-                message: `from findByIdAndUpdate : server error `,
-                error1,
-              });
+            res.status(500).json({
+              success: false,
+              message: `from findByIdAndUpdate : server error `,
+              error1,
+            });
           });
       } else {
-        res
-          .status(403)
-          .json({
-            success: false,
-            message: `you are not the creater: not allowed to update `,
-          });
+        res.status(403).json({
+          success: false,
+          message: `you are not the creater: not allowed to update `,
+        });
       }
     })
     .catch((error) => {
@@ -109,4 +105,53 @@ const updatProductById = (req, res) => {
       });
     });
 };
-module.exports = { getAllProducts, addProduct, updatProductById };
+// function to deleteProductById
+const deleteProductById = (req, res) => {
+  _id = req.params._id;
+  userId = req.token.userId;
+  productModel
+    .findById(_id)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          message: `the product with ${_id} is not found`,
+        });
+      }
+      if (result.userId == userId) {
+        productModel
+          .deleteOne({ _id })
+          .then((result1) => {
+            res
+              .status(200)
+              .json({
+                success: true,
+                message: `the product is deleted successfully`,
+                result1,
+              });
+          })
+          .catch((err1) => {
+            res.status(500).json({
+              success: false,
+              message: ` from deleteOne : server Error`,
+              err1,
+            });
+          });
+      } else {
+        res.status(404).json({ message: `not allowed` });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: `deleteProductById: server error`,
+        err,
+      });
+    });
+};
+module.exports = {
+  getAllProducts,
+  addProduct,
+  updatProductById,
+  deleteProductById,
+};
