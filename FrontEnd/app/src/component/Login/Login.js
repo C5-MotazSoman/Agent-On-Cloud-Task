@@ -2,7 +2,7 @@ import "./style.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-function Login() {
+function Login({setToken}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ function Login() {
       .post("http://localhost:5000/login", { email, password })
       .then((result) => {
         localStorage.setItem("token", JSON.stringify(result.data.token));
+        setToken(result.data.token)
         if (result.data.success) {
           navigate("/");
         }
