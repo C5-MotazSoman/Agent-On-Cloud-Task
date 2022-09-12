@@ -14,6 +14,7 @@ app.use(express.json())
 // import the Routers
 const userRouter=require("./router/user")
 const loginRouter=require("./router/login")
+const productRoter=require("./router/Product")
 
 
 
@@ -22,6 +23,7 @@ const loginRouter=require("./router/login")
 // Routers middleware
 app.use("/user",userRouter)
 app.use("/login",loginRouter)
+app.use("/product",productRoter)
 
 
 
