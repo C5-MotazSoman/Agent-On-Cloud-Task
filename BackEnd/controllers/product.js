@@ -122,13 +122,11 @@ const deleteProductById = (req, res) => {
         productModel
           .deleteOne({ _id })
           .then((result1) => {
-            res
-              .status(200)
-              .json({
-                success: true,
-                message: `the product is deleted successfully`,
-                result1,
-              });
+            res.status(200).json({
+              success: true,
+              message: `the product is deleted successfully`,
+              result1,
+            });
           })
           .catch((err1) => {
             res.status(500).json({
@@ -149,9 +147,36 @@ const deleteProductById = (req, res) => {
       });
     });
 };
+// function to get single product
+const getProductById = (req, res) => {
+  _id = req.params._id;
+  productModel
+    .findById({ _id })
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          message: `the  product with ${_id} is not found`,
+        });
+      }
+      res
+        .status(200)
+        .json({ success: true, message: `the product with ${_id}`, result });
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({
+          success: false,
+          message: `from getProductById : server Error`,
+          error,
+        });
+    });
+};
 module.exports = {
   getAllProducts,
   addProduct,
   updatProductById,
   deleteProductById,
+  getProductById,
 };
