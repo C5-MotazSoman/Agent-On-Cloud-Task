@@ -3,15 +3,18 @@ const express=require("express")
 const authentication = require("../middleware/authentication")
 
 // import controller
-const {getAllProducts, addProduct}=require("../controllers/product")
+const {getAllProducts, addProduct,updatProductById}=require("../controllers/product")
 
 const productRoter=express.Router()
 
 
-// endpoints 
+// endpoints :
+// endpoint to get all product 
 productRoter.get("/", authentication,getAllProducts)
+// end point to add product 
 productRoter.post("/new",authentication,addProduct)
-
+// endpoint to updat product
+productRoter.put("/:_id",authentication,updatProductById)
 
 
 

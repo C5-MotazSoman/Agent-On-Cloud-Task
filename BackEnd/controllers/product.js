@@ -55,4 +55,58 @@ const getAllProducts = (req, res) => {
       });
     });
 };
-module.exports = { getAllProducts, addProduct };
+// function to updateProduct
+const updatProductById = (req, res) => {
+  const _id = req.params._id;
+  userId = req.token.userId;
+  // check user id
+  productModel
+    .findById(_id)
+    .then((result) => {
+      // console.log(userId);
+      // console.log(result.userId);
+      // check if there result
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          message: `the product with ${_id} is not found`,
+        });
+      }
+      // check if result.userId===userId
+      if (result.userId == userId) {
+        productModel
+          .findByIdAndUpdate(_id, req.body, { new: true })
+          .then((result1) => {
+            res.status(202).json({
+              success: true,
+              message: `product updated`,
+              result1,
+            });
+          })
+          .catch((error1) => {
+            res
+              .status(500)
+              .json({
+                success: false,
+                message: `from findByIdAndUpdate : server error `,
+                error1,
+              });
+          });
+      } else {
+        res
+          .status(403)
+          .json({
+            success: false,
+            message: `you are not the creater: not allowed to update `,
+          });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: `from findById: server error`,
+        error,
+      });
+    });
+};
+module.exports = { getAllProducts, addProduct, updatProductById };
